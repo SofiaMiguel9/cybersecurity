@@ -10,7 +10,8 @@ Os comandos abaixo permitem visualizar, adicionar e remover variáveis de ambien
 
 Estas variáveis influenciam o comportamento de comandos (por exemplo, `PATH` muda onde o sistema procura binários).
 
-📸 Imagens:
+![print 1](images/2.1_1.png)
+![print 2](images/2.1_2.png)
 
 # **2.2 Task 2: Passing Environment Variables from Parent Process to Child Process**
 
@@ -22,14 +23,14 @@ O ficheiro `myprintenv.c` (fornecido no Labsetup.zip) foi compilado e executado 
 O programa cria um processo filho com `fork()`. O filho chama `printenv()`, que lista todas as variáveis de ambiente herdadas.
 O output foi redirecionado para `child_env.txt`.
 
-📸
+![Child process environment](images/2.2_1.png)
 
 **Step 2 – Parent Process**
 
 Alterou-se o código para desativar a impressão no processo filho e ativar no processo pai.
 O output foi guardado em `parent_env.txt`.
 
-📸
+![Parent process environment](images/2.2_2.png)
 
 **Step 3 – Comparison**
 
@@ -40,7 +41,7 @@ Os dois ficheiros foram comparados com o comando:
 
 Nenhuma diferença foi listada.
 
-📸
+![Comparison result](images/2.2_3.png)
 
 O resultado mostra que as variáveis de ambiente do pai e do filho são idênticas, logo:
 o processo filho herda todas as variáveis de ambiente do processo pai após a chamada a `fork()`.
@@ -64,7 +65,7 @@ O código foi alterado para usar:
 
 O programa mostrou todas as variáveis de ambiente (`PATH`, `PWD`, `HOME`, etc.), confirmando que environ contém o ambiente do processo atual.
 
-📸
+![execve with environ](images/2.3_1.png)
 
 Quando se usa `execve()`, o novo programa só herda as variáveis de ambiente se forem explicitamente passadas.
 Passar `NULL` resulta num ambiente vazio; passar environ preserva o ambiente do processo original.
@@ -78,13 +79,13 @@ O programa `system_env.c` foi compilado e executado para correr o comando `/usr/
 A função `system()` executa internamente `/bin/sh -c`, e o sh herda as variáveis de ambiente do processo que a invoca.
 Assim, as variáveis do processo original são automaticamente transmitidas ao novo programa.
 
-📸
+![system() environment](images/2.4_1.png)
 
 # **2.5 Task 5: Environment Variable and Set-UID Programs**
 
-📸
+![Set-UID output 1](images/2.5_1.png)
 
-📸
+![Set-UID output 2](images/2.5_2.png)
 
 O output mostra variáveis como `PATH`, `PWD`, `HOME` e `MYTEST`.
 No entanto, variáveis como `LD_LIBRARY_PATH` não são exibidas — são removidas automaticamente para evitar ataques de manipulação de bibliotecas em programas Set-UID.
