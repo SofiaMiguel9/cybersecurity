@@ -89,3 +89,23 @@ Assim, as variáveis do processo original são automaticamente transmitidas ao n
 
 O output mostra variáveis como `PATH`, `PWD`, `HOME` e `MYTEST`.
 No entanto, variáveis como `LD_LIBRARY_PATH` não são exibidas — são removidas automaticamente para evitar ataques de manipulação de bibliotecas em programas Set-UID.
+
+# **Task 6: The PATH Environment Variable and Set-UID Programs**
+
+## Preparação do binário vulnerável
+Foi compilado um programa `vuln_ls.c` que usa `system("ls")` e um pequeno `ls` malicioso para testar.
+
+![Código e compilação](images/2.6_1.jpeg)
+*Figura 1: Código fonte e compilação do programa vulnerável (`vuln_ls.c`) e do binário `ls` usado como payload.*
+
+## Configuração: Set-UID, PATH e shell
+O binário `vuln_ls` foi tornado Set-UID root; foi colocada uma versão maliciosa de `ls` num diretório do utilizador e esse directório foi colocado no início do `PATH`. Para fins didácticos, `/bin/sh` foi temporariamente apontado para um shell sem a protecção do `dash`.
+
+![Configuração e PATH](images/2.6_2.jpeg)
+*Figura 2: Alteração do owner/permissions do binário (Set-UID), export do `PATH` com directório do utilizador e alteração temporária de `/bin/sh` (ambiente de laboratório).*
+
+## Execução e verificação
+O binário vulnerável foi executado; a saída do payload inclui uma mensagem e a execução de `whoami`, que devolveu `root`, confirmando execução com privilégios de administrador.
+
+![Execução do exploit](images/2.6_3.jpeg)
+*Figura 3: Execução do `vuln_ls` e output do payload: mensagem de sucesso e `whoami` → `root` (evidência do exploit).*
