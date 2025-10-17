@@ -96,16 +96,30 @@ No entanto, variáveis como `LD_LIBRARY_PATH` não são exibidas — são removi
 Foi compilado um programa `vuln_ls.c` que usa `system("ls")` e um pequeno `ls` malicioso para testar.
 
 ![Código e compilação](images/2.6_1.jpeg)
-*Figura 1: Código fonte e compilação do programa vulnerável (`vuln_ls.c`) e do binário `ls` usado como payload.*
+
+
 
 ## Configuração: Set-UID, PATH e shell
 O binário `vuln_ls` foi tornado Set-UID root; foi colocada uma versão maliciosa de `ls` num diretório do utilizador e esse directório foi colocado no início do `PATH`. Para fins didácticos, `/bin/sh` foi temporariamente apontado para um shell sem a protecção do `dash`.
 
 ![Configuração e PATH](images/2.6_2.jpeg)
-*Figura 2: Alteração do owner/permissions do binário (Set-UID), export do `PATH` com directório do utilizador e alteração temporária de `/bin/sh` (ambiente de laboratório).*
 
+**Propósito técnico:**
+
+- O bit Set-UID faz com que o processo herde privilégios de root quando executado por um utilizador normal.
+
+- Como `system()` invoca o shell, este resolve ls consultando `PATH`; com o directório do atacante em primeiro lugar, o ls malicioso é selecionado.
+
+- Em muitos sistemas dash evita a exploração ao dropar privilégios; a demonstração usa um shell alternativo apenas para ilustrar a consequência quando essa proteção não existe.
 ## Execução e verificação
 O binário vulnerável foi executado; a saída do payload inclui uma mensagem e a execução de `whoami`, que devolveu `root`, confirmando execução com privilégios de administrador.
 
 ![Execução do exploit](images/2.6_3.jpeg)
-*Figura 3: Execução do `vuln_ls` e output do payload: mensagem de sucesso e `whoami` → `root` (evidência do exploit).*
+
+- `system("ls")` usa o shell e faz a resolução do comando via `PATH`. Se `PATH` for controlado por um atacante, o shell pode executar binários do atacante em vez dos binários do sistema.
+
+- Um binário Set-UID executa com o EUID do owner (root), portanto qualquer processo filho herdará esse privilégio.
+
+- A combinação (shell + PATH controlável + Set-UID) permite execução de código arbitrário com direitos elevados, a menos que existam mitigadores.
+
+A alteração de `/bin/sh` foi temporária e reposta no final do experimento; todos os ficheiros de teste foram removidos.
