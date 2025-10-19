@@ -123,3 +123,17 @@ O binário vulnerável foi executado; a saída do payload inclui uma mensagem e 
 - A combinação (shell + PATH controlável + Set-UID) permite execução de código arbitrário com direitos elevados, a menos que existam mitigadores.
 
 A alteração de `/bin/sh` foi temporária e reposta no final do experimento; todos os ficheiros de teste foram removidos.
+
+# **Task 8: Invoking External Programs Using system() versus execve()**
+
+Compilamos o programa e demos permissoes Set-UID com propriedade `root` e fizemos testes para verificar se está a funcionar como esperado.
+
+De seguida foi feita uma tentativa de exploração usando metacaracteres e verificamos se o ataque foi bem sucedido, e ao tentar ler novamente, podemos verificar que o ataque foi efetuado com sucesso. 
+
+O sucesso do programa deveu-se ao uso da função `system()` que invoca um shell para executar a string de comando e a shell interpretou o ponto e virgula como um separador de comandos, assim sendo ambos comandos foram executados.
+
+Todoo processo foi feito com previlegios `root`, o comando `rm catall.txt` também. 
+
+Respondendo a questão, o Bob pode pode comprometer a integridade do sistema e remover um arquivo sem permissão de escrita.
+
+![Demostração](images/task8.png)
