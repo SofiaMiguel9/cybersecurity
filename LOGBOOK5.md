@@ -1,3 +1,23 @@
+### Buffer Overflow Attack ###
+
+Começamos por preparar o ambiente para o Seed Lab, começando por desativar a funcionalidade de randomização do endereço de stacks e heaps.
+
+Como versões recentes do Ubuntu, tanto o dash como o bash possuem medidas de segurança contra processos Set-UID, tivemos que mudar a shell que vamos usar neste seed lab, para a shell zsh, ou seja, fazer bin/sh apontar para bin/zsh. 
+![Print 1 ](images/trf1.jpeg)
+
+**Task 1**
+
+Começamos por compilar o código que invoca a shellcode, através do comando make, que gera duas cópias do shellcode, em 32 e 64 bits. 
+Ao correr os programas, eles abrem uma nova shell, a zsh 
+![Print 1 ](images/tr1task1.jpeg)
+
+**Task 2**
+
+Começamos por editar a variável L1 da Makefile para 100+8*3 = 124. 
+De seguida, compilamos o programa stack.c, desativando o protocolo StackGuard e ativando a permissão de execução de código presente na stack. Além disso, mudamos a propriedade do programa para “root” e a permissão para 4755. Como os comandos estão inseridos na Makefile, executamos a seguinte instrução, especificando apenas o target no argv[1], que vai definir o BUF_SIZE
+![Print 1 ](images/tr1task2.jpeg)
+
+
 ### Task 3: Exploração de Buffer Overflow
 
 **1. Setup do Ambiente**
@@ -10,7 +30,7 @@
     ```bash
     $ sudo ln -sf /bin/zsh /bin/sh
     ```
-  * Trocámos o valor de `L1` no `Makefile` para `100+8*3=132` (Grupo 3).
+  * Trocámos o valor de `L1` no `Makefile` para `100+8*3=124` (Grupo 3).
 
 **2. Compilação e Preparação**
 
