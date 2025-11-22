@@ -52,6 +52,7 @@ Podemos concluir que o programa crashou, pois não aparece impresso neste output
 * Task 2.A: Stack Data
 
 Para a realização desta tarefa, efetuámos algumas alterações no script build_string.py para criar um novo payload que permite imprimir os dados na stack.
+
 ![Print 1 ](images/Logbook6/Task2A_image1.jpeg)
 
 
@@ -66,6 +67,7 @@ $ cat badfile | nc 10.9.0.5 9090
 Execução do script build_string.py para gerar o ficheiro badfile com o payload para a Task 2A e envio do conteúdo de badfile ao servidor, mostrando o uso do comando nc para conectar ao endereço 10.9.0.5.
 
 Observámos a consola do container para verificar o output da stack. Procurámos pelo número 0xdeadbeef nos valores impressos, o que confirma que estás a ler os dados corretos.
+
 ![Print 1 ](images/Logbook6/Task2A_image2.png)
 ![Print 1 ](images/Logbook6/Task2A_image3.png)
 
@@ -90,6 +92,7 @@ $ cat badfile | nc 10.9.0.5 9090
 
 
 Observámos a consola do container para verificar o output da stack. A saída do container confirma que o valor original da variável target (0x11223344) foi alterado para 0x00000202, que corresponde a 514 em decimal. Isso indica que 514 caracteres foram impressos antes de printf processar o último especificador de formato.
+
 ![Print 1 ](images/Logbook6/Task3A_image2.png)
 ![Print 1 ](images/Logbook6/Task3A_image3.png)
 
@@ -117,6 +120,7 @@ $ cat badfile | nc 10.9.0.5 9090
 
 
 Observámos a consola do container para verificar o output da stack. A saída do container confirma que o valor original da variável target (0x11223344) foi alterado para 0x5000.
+
 ![Print 1 ](images/Logbook6/Task3B_image2.png)
 ![Print 1 ](images/Logbook6/Task3B_image3.png)
 
