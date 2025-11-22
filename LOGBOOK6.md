@@ -45,3 +45,78 @@ que, como é impresso sozinho, sem nenhum argumento correspondente, vai tentar i
 ![Print 1 ](images/Logbook6/lgb7.jpeg)
 
 Podemos concluir que o programa crashou, pois não aparece impresso neste output "Returned properly".
+
+
+### Task2: Printing Out the Server Program’s Memory
+
+* Task 2.A: Stack Data
+
+Para a realização desta tarefa, efetuámos algumas alterações no script build_string.py para criar um novo payload que permite imprimir os dados na stack.
+![Print 1 ](images/Logbook6/Task2A_image1.jpeg)
+
+
+Foram necessários 64 format specifiers %.8x para 0xdeadbeef ser impresso. 0xdeadbeef (4 bytes) foi colocado no início do payload e o valor, 64, foi obtido por tentativa e erro.
+
+Compilámos o script build_string.py e enviámos o payload para o servidor:
+$ python3 build_str ing.py
+$ cat badfile | nc 10.9.0.5 9090
+
+
+
+Execução do script build_string.py para gerar o ficheiro badfile com o payload para a Task 2A e envio do conteúdo de badfile ao servidor, mostrando o uso do comando nc para conectar ao endereço 10.9.0.5.
+
+Observámos a consola do container para verificar o output da stack. Procurámos pelo número 0xdeadbeef nos valores impressos, o que confirma que estás a ler os dados corretos.
+![Print 1 ](images/Logbook6/Task2A_image2.png)
+![Print 1 ](images/Logbook6/Task2A_image3.png)
+
+
+
+Print da consola do container, exibindo o conteúdo da stack e a confirmação do identificador 0xdeadbeef, indicando que o offset correto foi encontrado.
+
+
+
+
+
+## Task3: Modifying the Server Program’s Memory
+
+* Task 3.A: Change the value to a different value
+
+Nesta tarefa, modificamos os primeiros 4 bytes do input, substituindo-os pelo endereço da target variable 0x080e5068, exibido na saída do servidor na etapa anterior ("The target variable's address: 0x080e5068"). Alteramos o último especificador de formato de %x para %n, de modo que o número de caracteres impressos pela função printf seja armazenado no endereço indicado, permitindo alterar o valor da variável para qualquer outro.
+
+Compilámos o script build_string.py e enviámos o payload para o servidor:
+$ python3 build_str ing.py
+$ cat badfile | nc 10.9.0.5 9090
+
+
+
+Observámos a consola do container para verificar o output da stack. A saída do container confirma que o valor original da variável target (0x11223344) foi alterado para 0x00000202, que corresponde a 514 em decimal. Isso indica que 514 caracteres foram impressos antes de printf processar o último especificador de formato.
+![Print 1 ](images/Logbook6/Task3A_image2.png)
+![Print 1 ](images/Logbook6/Task3A_image3.png)
+
+
+
+
+
+* Task 3.B: Change the value to 0x5000
+
+Nesta tarefa, o objetivo foi alterar o valor da variável target para 0x5000 (20480 em decimal) utilizando a exploração de vulnerabilidades de formatação de strings. Para alcançar esse resultado, foi necessário construir um payload que, ao ser processado, escrevesse o número total de caracteres impressos no endereço da variável target.
+
+A técnica utilizada baseou-se no uso de modificadores de precisão em conjunto com format specifiers. Especificamente, a string de formatação construída foi:
+
+# - "%.8x" * 62: Imprime 62 blocos de 8 dígitos hexadecimais cada, consumindo 496 caracteres.
+# - "%.19976x": Imprime mais 19976 caracteres, totalizando 20472 caracteres adicionais.
+# - "%n": Escreve o número total de caracteres impressos (20480 = 20472 + 8 caractéres do endereço) no endereço da variável target (0x080e5068). O payload gerado foi armazenado em um arquivo chamado badfile, contendo o endereço da variável target, seguido pela string de formatação.
+
+Esse método permitiu a modificação do valor da variável target para 0x5000, conforme evidenciado no output do servidor, validando assim o sucesso da exploração.
+
+
+
+Compilámos o script build_string.py e enviámos o payload para o servidor:
+$ python3 build_str ing.py
+$ cat badfile | nc 10.9.0.5 9090
+
+
+Observámos a consola do container para verificar o output da stack. A saída do container confirma que o valor original da variável target (0x11223344) foi alterado para 0x5000.
+![Print 1 ](images/Logbook6/Task3B_image2.png)
+![Print 1 ](images/Logbook6/Task3B_image3.png)
+
