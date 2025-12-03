@@ -24,7 +24,7 @@ Ao aplicar a chave ao início do criptograma, o resultado foi texto legível em 
 
 ### 3. Decifragem
 Utilizámos um script simples em Python para testar a hipótese.
-
+```python
 # Vigenère Cipher Decryption Script
 # Alphabet: A-Z (indices 0-25) followed by 0-9 (indices 26-35)
 # Total Alphabet Size: 36
@@ -122,7 +122,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-
+```
 
 **Texto Decifrado:**
 > INTERCHANGINGMINDCONTROLCOMELETTHEREVOLUTIONTAKEITSTOLLIFYOUCOULDFLICKASWITCHANDOPENYOUR3RDEYEYOUDSEETHATWESHOULDNEVERBEAFRAIDTODIERISEUPANDTAKETHEPOWERBACKITSTIMETHE
