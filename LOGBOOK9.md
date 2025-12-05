@@ -168,14 +168,6 @@ A diferença reside na utilização de **Padding (Preenchimento)**.
 
 ## Task 5: Error Propagation – Corrupted Cipher Text
 
-Aqui está o logbook para a **Task 5**, organizado e formatado.
-
-Integrei o teu script Python, os comandos específicos que mostraste nas capturas de ecrã e a análise dos resultados obtidos.
-
------
-
-# Logbook: Task 5 - Error Propagation in Encryption Modes
-
 ## 1\. Objetivo e Preparação
 
 O objetivo desta tarefa foi analisar a **propagação de erros** nos diferentes modos de cifra (ECB, CBC, CTR). Queríamos verificar o impacto na decifragem quando um único byte do ficheiro cifrado é corrompido.
