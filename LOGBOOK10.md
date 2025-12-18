@@ -29,7 +29,7 @@ docker-compose up -d
 docker ps
 ```
 
-**[11.png]** 
+![1](images/111.png)
 
 ### 2. Configuração do /etc/hosts
 
@@ -73,7 +73,8 @@ echo -n "123456:myname=SofiaCoutinho&uid=1001&lstcmd=1" | sha256sum
 bdf6f4262fab93d2a689eafc9cf17ed91a8205250a5655ddfce15dd8e94c43d6
 ```
 
-**[22.png]** 
+![2](images/22.png)
+
 
 #### 1.2 Teste do pedido lstcmd
 
@@ -82,7 +83,8 @@ Construímos o URL:
 http://www.seedlab-hashlen.com/?myname=SofiaCoutinho&uid=1001&lstcmd=1&mac=bdf6f4262fab93d2a689eafc9cf17ed91a8205250a5655ddfce15dd8e94c43d6
 ```
 
-**[33.png]** 
+![3](images/33.png)
+
 
 #### 1.3 Cálculo do MAC para download
 
@@ -96,7 +98,8 @@ echo -n "123456:myname=SofiaCoutinho&uid=1001&lstcmd=1&download=secret.txt" | sh
 62f21ce7b74b644953d72a00bc8d4013be14aa83775df999857c929602a84628
 ```
 
-**[44.png]** 
+![4](images/44.png)
+
 
 #### 1.4 Teste do pedido download
 
@@ -105,7 +108,8 @@ URL construído:
 http://www.seedlab-hashlen.com/?myname=SofiaCoutinho&uid=1001&lstcmd=1&download=secret.txt&mac=62f21ce7b74b644953d72a00bc8d4013be14aa83775df999857c929602a84628
 ```
 
-**[55.png]** 
+![5](images/55.png)
+
 
 ### Análise
 
@@ -130,14 +134,16 @@ O SHA-256 processa mensagens em blocos de 64 bytes. O padding consiste em:
 
 Criámos um script Python (`padding_calculator.py`) para calcular o padding:
 
-**[66.png]** 
+![6](images/66.png)
+
 
 ### Execução e Resultados
 ```bash
 python3 padding_calculator.py
 ```
 
-**[77.png]** 
+![7](images/77.png)
+
 - Tamanho da mensagem: **45 bytes**
 - Tamanho em bits: **360 bits (0x168)**
 - Padding: **19 bytes** (1 + 10 zeros + 8 length field)
@@ -176,7 +182,8 @@ O SHA-256 é uma função iterativa que processa blocos de 64 bytes. O estado in
 
 Criámos o ficheiro `length_ext.c`:
 
-**[88.png]** 
+![8](images/88.png)
+
 
 **Pontos importantes do código:**
 - Dividimos o MAC original em 8 partes de 32 bits cada
@@ -190,7 +197,8 @@ gcc length_ext.c -o length_ext -lcrypto
 ./length_ext
 ```
 
-**[99.png]** 
+![9](images/99.png)
+
 ```
 4bf5f436d78aa1b1406df984ed14e80db47fce9547bcc9d82c88e2748fa1a1f8
 ```
@@ -210,13 +218,9 @@ http://www.seedlab-hashlen.com/?myname=SofiaCoutinho&uid=1001&lstcmd=1%80%00%00%
 
 #### 3.4 Resultado do Ataque
 
-**[1010.png]** 
-```
-Yes, your MAC is valid
-File Content
-TOP SECRET.
-DO NOT DISCLOSE.
-```
+![10](images/1010.png)
+
+---
 
 ### Análise Técnica
 
